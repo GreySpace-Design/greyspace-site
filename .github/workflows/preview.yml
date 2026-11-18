@@ -1,0 +1,33 @@
+name: Preview website pull requests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate required files
+        run: |
+          test -f index.html
+          test -f styles.css
+          test -f CNAME
+      - name: Prepare preview
+        run: |
+          mkdir -p preview
+          cp *.html *.css *.svg preview/
+          # A preview must never claim the production custom domain.
+          test ! -f preview/CNAME
+      - name: Publish Cloudflare Pages preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy preview --project-name=greyspace-site --branch=pr-${{ github.event.pull_request.number || 'manual' }}
