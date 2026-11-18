@@ -342,7 +342,7 @@ body { overflow-x:hidden; }
 }
 .capabilities .number,.process .number,.experience-grid .number,.site-teasers .number { font-variant-numeric:tabular-nums;letter-spacing:.13em; }
 .site-teasers a { display:block;position:relative;padding-right:18px; }
-.site-teasers a::after { content:"↗";position:absolute;right:2px;top:18px;color:var(--accent);font-size:20px; }
+.site-teasers a::after { content:"";position:absolute;right:2px;top:22px;width:18px;height:2px;background:var(--accent); }
 .inner-hero { position:relative; }
 .inner-hero::after { content:"G / S";position:absolute;right:0;bottom:24px;color:var(--line);font:600 11px Inter,sans-serif;letter-spacing:.3em; }
 .email-large { transition:color .2s ease,border-color .2s ease;overflow-wrap:anywhere; }
